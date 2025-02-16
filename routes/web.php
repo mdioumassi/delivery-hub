@@ -24,11 +24,14 @@ Route::middleware([
     })->name('dashboard');
 });
 
+// Route::resource('profile', UserController::class)->only(['show', 'edit', 'update']);
 
+// Route::get('/profile/{profile}/edit', [UserController::class, 'edit'])->name('profile.edit');
+// Route::put('/users/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.update-password');
 Route::resource('users', UserController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('containers', ContainerController::class);
 Route::resource('packages', PackageController::class);
 Route::resource('destinations', DestinationController::class);
-Route::resource('package-trackings', PackageTrackingController::class);
+Route::resource('trackings', PackageTrackingController::class);

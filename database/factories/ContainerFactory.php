@@ -14,7 +14,7 @@ class ContainerFactory extends Factory
     public function definition()
     {
         return [
-            'type' => $this->faker->randomElement(['type1', 'type2', 'type3']),
+            'type' => $this->faker->randomElement(['baril', 'valise', 'vehicule']),
             'unit_price' => $this->faker->randomFloat(2, 100, 1000),
             'description' => $this->faker->sentence(),
             'status' => $this->faker->boolean(),

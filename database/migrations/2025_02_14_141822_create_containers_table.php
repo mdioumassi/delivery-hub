@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('containers', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['type1', 'type2', 'type3']); // À adapter selon vos besoins
+            $table->enum('type', ['baril', 'valise', 'vehicule']); // À adapter selon vos besoins
             $table->decimal('unit_price', 10, 2);
             $table->text('description')->nullable();
             $table->boolean('status')->default(true);

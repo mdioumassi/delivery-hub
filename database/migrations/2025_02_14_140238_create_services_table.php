@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['type1', 'type2', 'type3']); // À adapter selon vos besoins
+            $table->enum('type', ['Envoi aérien', ' Envoi maritime', 'Envoi routier']); // À adapter selon vos besoins
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->foreignId('company_id')->constrained()->onDelete('cascade');

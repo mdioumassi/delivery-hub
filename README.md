@@ -51,3 +51,11 @@ php artisan make:seeder ContainersTableSeeder
 php artisan make:seeder PackagesTableSeeder
 php artisan make:seeder DestinationsTableSeeder
 php artisan make:seeder PackageTrackingTableSeeder
+
+php artisan make:controller UserController --resource
+php artisan make:controller CompanyController --resource
+php artisan make:controller ServiceController --resource
+php artisan make:controller ContainerController --resource
+php artisan make:controller PackageController --resource
+php artisan make:controller PackageTrackingController --resource
+php artisan make:controller DestinationController --resource

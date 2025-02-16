@@ -1,17 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Liste des conteneurs')
+@section('header')
+Liste des conteneurs
+@endsection
 
 @section('content')
 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6 flex justify-between">
-        <h1 class="text-2xl font-bold">Liste des conteneurs</h1>
-        <a href="{{ route('containers.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Nouveau conteneur
-        </a>
-    </div>
-    
-    <div class="px-4 py-5 sm:p-6">
+    <div class="p-6 bg-white border-b border-gray-200">
+        <div class="flex justify-end mb-4">
+            <a href="{{ route('packages.create') }}" class="bg-blue-500 text-white hover:bg-blue-700 font-bold py-2 px-4 rounded">
+                Ajouter un envoi de container
+            </a>
+        </div>
+        <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
             <thead>
                 <tr>
@@ -28,6 +29,9 @@
                         Statut
                     </th>
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Client
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Service
                     </th>
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -39,14 +43,15 @@
                 @foreach($containers as $container)
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap">{{ $container->type }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">{{ $container->unit_price }} €</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ number_format($container->unit_price, 2) }} €</td>
                     <td class="px-6 py-4">{{ Str::limit($container->description, 50) }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                            {{ $container->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                            {{ $container->status }}
-                        </span>
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                        {{ $container->status === 1 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                        {{ $container->status == 1 ? 'Actif' : 'En attente' }}
+                    </span>
                     </td>
+                    <td>{{ $container->client->firstname }} {{ $container->client->name }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">{{ $container->service->type }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <a href="{{ route('containers.show', $container) }}" class="text-blue-600 hover:text-blue-900 mr-3">

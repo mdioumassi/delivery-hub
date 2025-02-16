@@ -13,7 +13,7 @@ class ContainerController extends Controller
      */
     public function index()
     {
-        $containers = Container::paginate(10);
+        $containers = Container::with(['service', 'client', 'packageTrackings'])->paginate(10);
         return view('containers.index', compact('containers'));
     }
 
@@ -22,7 +22,17 @@ class ContainerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'type' => 'required|in:baril,valise,vehicule',
+            'unit_price' => 'required|numeric',
+            'description' => 'required',
+            'status' => 'required|numeric',
+            'service_id' => 'required|exists:services,id',
+            'client_id' => 'required|exists:users,id'
+        ]);
+
+        Container::create($validated);
+        return redirect()->route('containers.index')->with('success', 'Conteneur créé');
     }
 
     /**
@@ -38,7 +48,17 @@ class ContainerController extends Controller
      */
     public function update(Request $request, Container $container)
     {
-        //
+        $validated = $request->validate([
+            'type' => 'required|in:baril,valise,vehicule',
+            'unit_price' => 'required|numeric',
+            'description' => 'required',
+            'status' => 'required|numeric',
+            'service_id' => 'required|exists:services,id',
+            'client_id' => 'required|exists:users,id'
+        ]);
+
+        $container->update($validated);
+        return redirect()->route('containers.index')->with('success', 'Conteneur mis à jour');
     }
 
     /**

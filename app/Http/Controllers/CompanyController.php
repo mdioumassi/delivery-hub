@@ -9,6 +9,7 @@ class CompanyController extends Controller
 {
     public function index()
     {
+        // $companies = Company::with('services')->paginate(10);
         $companies = Company::paginate(10);
         return view('companies.index', compact('companies'));
     }
@@ -22,20 +23,21 @@ class CompanyController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'phone_fixe' => 'required',
-            'phone_mobile' => 'required',
-            'phone_whatsapp' => 'required',
+            'phone_fixe' => 'nullable',
+            'phone_mobile' => 'nullable',
+            'phone_whatsapp' => 'nullable',
             'email' => 'required|email',
             'address' => 'required',
             'city' => 'required',
             'zip_code' => 'required',
             'country' => 'required',
-            'user_id' => 'required|exists:users,id',
-            'logo_url' => 'nullable|image',
+            'siret' => 'required|numeric',
+            'gestionnaire_id' => 'required|exists:users,id'
         ]);
 
-        if ($request->hasFile('logo_url')) {
-            $validated['logo_url'] = $request->file('logo_url')->store('logos', 'public');
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('logos', 'public');
+            $validated['logo_url'] = $path;
         }
 
         Company::create($validated);
@@ -52,20 +54,21 @@ class CompanyController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'phone_fixe' => 'required',
-            'phone_mobile' => 'required',
-            'phone_whatsapp' => 'required',
+            'phone_fixe' => 'nullable',
+            'phone_mobile' => 'nullable',
+            'phone_whatsapp' => 'nullable',
             'email' => 'required|email',
             'address' => 'required',
             'city' => 'required',
             'zip_code' => 'required',
             'country' => 'required',
-            'user_id' => 'required|exists:users,id',
-            'logo_url' => 'nullable|image',
+            'siret' => 'required|numeric',
+            'gestionnaire_id' => 'required|exists:users,id'
         ]);
 
-        if ($request->hasFile('logo_url')) {
-            $validated['logo_url'] = $request->file('logo_url')->store('logos', 'public');
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('logos', 'public');
+            $validated['logo_url'] = $path;
         }
 
         $company->update($validated);

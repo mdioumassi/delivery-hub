@@ -13,7 +13,7 @@ class ServiceFactory extends Factory
     public function definition()
     {
         return [
-            'type' => $this->faker->randomElement(['type1', 'type2', 'type3']),
+            'type' => $this->faker->randomElement(['Envoi aérien', ' Envoi maritime', 'Envoi routier']),
             'description' => $this->faker->paragraph(),
             'is_active' => $this->faker->boolean(),
             'company_id' => Company::factory(),

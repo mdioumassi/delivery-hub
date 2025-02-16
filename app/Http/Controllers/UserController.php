@@ -23,12 +23,13 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'username' => 'required|unique:users',
-            'password' => 'required|min:6',
-            'role' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
             'firstname' => 'required',
             'lastname' => 'required',
             'phone' => 'required',
-            'email' => 'required|email|unique:users',
+            'role' => 'required|in:admin,user,manager',
+            'type' => 'required|in:client,gestionnaire'
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -65,11 +66,12 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'username' => 'required|unique:users,username,' . $user->id,
-            'role' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'firstname' => 'required',
             'lastname' => 'required',
             'phone' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'role' => 'required|in:admin,user,manager',
+            'type' => 'required|in:client,gestionnaire'
         ]);
 
         if ($request->filled('password')) {

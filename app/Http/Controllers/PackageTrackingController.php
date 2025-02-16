@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Package;
 use App\Models\PackageTracking;
 use Illuminate\Http\Request;
 
@@ -9,13 +10,15 @@ class PackageTrackingController extends Controller
 {
     public function index()
     {
-        $trackings = PackageTracking::with(['package', 'container', 'destination'])->get();
-        return view('package-trackings.index', compact('trackings'));
+        $trackings = PackageTracking::with(['package', 'container', 'destination'])
+        ->latest('tracking_date')
+        ->paginate(15);
+        return view('trackings.index', compact('trackings'));
     }
 
     public function create()
     {
-        return view('package-trackings.create');
+        return view('trackings.create');
     }
 
     public function store(Request $request)
@@ -24,19 +27,23 @@ class PackageTrackingController extends Controller
             'package_id' => 'required|exists:packages,id',
             'container_id' => 'required|exists:containers,id',
             'destination_id' => 'required|exists:destinations,id',
-            'tracking_date' => 'required|date',
-            'status' => 'boolean',
+            'status' => 'required|numeric',
             'notes' => 'nullable|string',
+            'tracking_date' => 'required|date'
         ]);
 
-        PackageTracking::create($validated);
+        $tracking = PackageTracking::create($validated);
 
-        return redirect()->route('package-trackings.index')->with('success', 'Suivi créé avec succès.');
+        // Mettre à jour le statut du package
+        $package = Package::find($validated['package_id']);
+        $package->update(['status' => $validated['status']]);
+
+        return redirect()->route('trackings.index')->with('success', 'Suivi créé avec succès.');
     }
 
     public function edit(PackageTracking $packageTracking)
     {
-        return view('package-trackings.edit', compact('packageTracking'));
+        return view('trackings.edit', compact('packageTracking'));
     }
 
     public function update(Request $request, PackageTracking $packageTracking)
@@ -52,12 +59,12 @@ class PackageTrackingController extends Controller
 
         $packageTracking->update($validated);
 
-        return redirect()->route('package-trackings.index')->with('success', 'Suivi mis à jour avec succès.');
+        return redirect()->route('trackings.index')->with('success', 'Suivi mis à jour avec succès.');
     }
 
     public function destroy(PackageTracking $packageTracking)
     {
         $packageTracking->delete();
-        return redirect()->route('package-trackings.index')->with('success', 'Suivi supprimé avec succès.');
+        return redirect()->route('trackings.index')->with('success', 'Suivi supprimé avec succès.');
     }
 }
