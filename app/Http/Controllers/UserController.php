@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Rinvex\Country\CountryLoader;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
     public function index()
     {
         $users = User::paginate(10);
@@ -16,20 +23,23 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        $countries = CountryLoader::countries(); 
+        return view('users.create', compact('countries'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'username' => 'required|unique:users',
+            'civility' => 'nullable',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
-            'firstname' => 'required',
-            'lastname' => 'required',
+            'name' => 'required',
             'phone' => 'required',
-            'role' => 'required|in:admin,user,manager',
-            'type' => 'required|in:client,gestionnaire'
+            'type' => 'nullable',
+            'street' => 'nullable',
+            'city' => 'nullable',
+            'zip_code' => 'nullable',
+            'country' => 'nullable',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);

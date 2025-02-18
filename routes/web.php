@@ -34,4 +34,5 @@ Route::resource('services', ServiceController::class);
 Route::resource('containers', ContainerController::class);
 Route::resource('packages', PackageController::class);
 Route::resource('destinations', DestinationController::class);
-Route::resource('trackings', PackageTrackingController::class);
+// Route::resource('trackings', PackageTrackingController::class);//
+Route::get('/trackings/{type}', [PackageTrackingController::class, 'index'])->name('trackings.index');

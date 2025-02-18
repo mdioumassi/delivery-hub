@@ -18,7 +18,8 @@ class PackageFactory extends Factory
             'weight' => $this->faker->numberBetween(1, 1000) . 'kg',
             'unit_price' => $this->faker->randomFloat(2, 10, 500),
             'status' => $this->faker->boolean(),
-            'client_id' => User::factory(),
+            'sender_id' => User::factory(),
+            'recipient_id' => User::factory(),
             'service_id' => Service::factory(),
         ];
     }

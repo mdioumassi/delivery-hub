@@ -16,12 +16,12 @@ return new class extends Migration
             $table->string('phone_mobile')->nullable();
             $table->string('phone_whatsapp')->nullable();
             $table->string('email');
-            $table->string('address');
+            $table->string('street');
             $table->string('city');
             $table->string('zip_code');
             $table->string('country')->default('France');
             $table->string('siret')->nullable();
-            $table->foreignId('gestionnaire_id')->constrained('users')->onDelete('cascade'); // <-- "users" au lieu de "user"
+            $table->foreignId('gestionnaire_id')->constrained('users'); // <-- "users" au lieu de "user"
             $table->timestamps();
         });
     }

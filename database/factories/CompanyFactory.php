@@ -19,7 +19,7 @@ class CompanyFactory extends Factory
             'phone_mobile' => $this->faker->phoneNumber(),
             'phone_whatsapp' => $this->faker->phoneNumber(),
             'email' => $this->faker->companyEmail(),
-            'address' => $this->faker->streetAddress(),
+            'street' => $this->faker->streetAddress(),
             'city' => $this->faker->city(),
             'zip_code' => $this->faker->postcode(),
             'country' => $this->faker->country(),

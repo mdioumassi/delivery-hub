@@ -27,12 +27,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'civility',
         'name',
         'email',
         'password',
-        'lastname',
+        'type',
         'phone',
-        'role'
+        'street',
+        'city',
+        'zip_code',
+        'country',
     ];
 
     public function companies(): HasMany
@@ -42,12 +46,12 @@ class User extends Authenticatable
 
     public function packages(): HasMany
     {
-        return $this->hasMany(Package::class, 'client_id');
+        return $this->hasMany(Package::class, 'sender_id');
     }
 
     public function containers(): HasMany
     {
-        return $this->hasMany(Container::class, 'client_id');
+        return $this->hasMany(Container::class, 'sender_id');
     }
     /**
      * The attributes that should be hidden for serialization.

@@ -28,12 +28,6 @@ Route::apiResource('packages', PackageController::class);
 Route::apiResource('destinations', DestinationController::class);
 Route::apiResource('package-tracking', PackageTrackingController::class);
 
-# Ces routes vont automatiquement créer les endpoints suivants pour chaque resource:
-# GET /api/resource - Index (liste)
-# POST /api/resource - Store (créer)
-# GET /api/resource/{id} - Show (afficher)
-# PUT/PATCH /api/resource/{id} - Update (modifier)
-# DELETE /api/resource/{id} - Destroy (supprimer)
 
 # Générer des données de test avec les factories et seeders
 php artisan make:factory UserFactory --model=User

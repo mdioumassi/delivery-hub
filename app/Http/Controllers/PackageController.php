@@ -3,38 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\Service;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $packages = Package::with(['service', 'client', 'tracking'])->paginate(10);
-        //$packages = Package::paginate(10);
+        $packages = Package::with(['service', 'sender', 'recipient','tracking'])->paginate(10);
         
         return view('packages.index', compact('packages'));
     }
 
     public function create()
     {
-        return view('packages.create');
+        $services = Service::all();
+        $senders = User::where('type', 'Expéditeur')->get();
+        $recipients = User::where('type', 'Récepteur')->get();
+      
+        return view('packages.create', compact('services', 'senders', 'recipients'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'required|in:envoi routier,envoi maritime,envoi aérien',
+            'type' => 'required',
             'weight' => 'required',
             'unit_price' => 'required|numeric',
-            'status' => 'required|numeric',
             'service_id' => 'required|exists:services,id',
-            'client_id' => 'required|exists:users,id'
+            'sender_id' => 'required|exists:users,id',
+            'recipient_id' => 'required|exists:users,id'
         ]);
+        $validated['status'] = 1; // Status initial
 
         $package = Package::create($validated);
 
           // Créer le tracking initial
           $package->tracking()->create([
+            'package_id' => $package->id,
+            'destination_id' => null,
             'status' => 1, // Status initial
             'tracking_date' => now(),
             'notes' => 'Package créé'
@@ -46,6 +59,7 @@ class PackageController extends Controller
 
     public function show(Package $package)
     {
+        dd($package);
         return view('packages.show', compact('package'));
     }
 

@@ -19,17 +19,23 @@ class Package extends Model
         'unit_price',
         'status',
         'service_id',
-        'client_id'
+        'sender_id',
+        'recipient_id',
     ];
 
-    public function client(): BelongsTo
+    public function sender(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'client_id');
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function recipient(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'recipient_id');
     }
 
     public function service(): BelongsTo
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(Service::class,);
     }
 
     public function destinations(): HasMany

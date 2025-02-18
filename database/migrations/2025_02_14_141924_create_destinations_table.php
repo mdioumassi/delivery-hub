@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('destinations', function (Blueprint $table) {
             $table->id();
-            $table->string('country')->default('France');
-            $table->foreignId('package_id')->constrained()->onDelete('cascade');
-            $table->foreignId('container_id')->constrained()->onDelete('cascade');
+            $table->string('country');
+            $table->foreignId('package_id')->constrained();
+            $table->foreignId('container_id')->constrained();
             $table->timestamps();
         });
     }

@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('containers', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['baril', 'valise', 'vehicule']); // À adapter selon vos besoins
+            $table->string('type'); // À adapter selon vos besoins
             $table->decimal('unit_price', 10, 2);
-            $table->text('description')->nullable();
-            $table->boolean('status')->default(true);
-            $table->foreignId('client_id')->constrained('users')->onDelete('cascade'); // <-- "users" au lieu de "user"
+            $table->boolean('status');
+            $table->foreignId('sender_id')->constrained('users');
+            $table->foreignId('recipient_id')->constrained('users');
             $table->foreignId('service_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Service;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $services = Service::paginate(10);
@@ -15,14 +21,15 @@ class ServiceController extends Controller
 
     public function create()
     {
-        return view('services.create');
+        $companies = Company::all();
+        return view('services.create', compact('companies'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'required|in:type1,type2,type3',
-            'description' => 'required',
+            'type' => 'required',
+            'description' => 'nullable',
             'is_active' => 'boolean',
             'company_id' => 'required|exists:companies,id',
         ]);

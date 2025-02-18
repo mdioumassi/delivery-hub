@@ -13,7 +13,7 @@ class Company extends Model
 
     protected $fillable = [
         'name', 'logo_url', 'phone_fixe', 'phone_mobile', 
-        'phone_whatssap', 'email', 'address',
+        'phone_whatssap', 'email', 'street',
         'gestionnaire_id', 'siret', 'city', 'zip_code', 'country'
     ];
 

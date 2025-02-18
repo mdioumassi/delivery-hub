@@ -17,9 +17,6 @@
                                 Colis
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Conteneur
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Destination
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -31,21 +28,23 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach ($trackings as $tracking)
+                        @if ($tracking->package)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $tracking->tracking_date->format('d/m/Y H:i') }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap"><a
-                                        href="{{ route('packages.show', $tracking->package) }}">
-                                        #{{ $tracking->package->id }}
-                                    </a></td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $tracking->container->type }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $tracking->destination->country }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                        <a href="{{ route('packages.show', $tracking->package) }}">
+                                            #{{ $tracking->package->id }}
+                                        </a>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap"></td>
                                 <td class="px-6 py-4 whitespace-nowrap"> <span
                                         class="badge bg-{{ $tracking->status == 1 ? 'success' : 'warning' }}">
                                         {{ $tracking->status == 1 ? 'En cours' : 'Terminé' }}
                                     </span></td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $tracking->notes }}</td>
                             </tr>
+                        @endif
                         @endforeach
                     </tbody>
                 </table>

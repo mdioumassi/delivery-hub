@@ -12,7 +12,7 @@ class Container extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type', 'unit_price', 'description', 'status', 'service_id', 'client_id'
+        'type', 'unit_price', 'status', 'service_id', 'sender_id', 'recipient_id'
     ];
 
     protected $casts = [
@@ -20,10 +20,15 @@ class Container extends Model
         'unit_price' => 'decimal:2'
     ];
 
-    public function client(): BelongsTo
+    public function sender(): BelongsTo
 
     {
-        return $this->belongsTo(User::class, 'client_id');
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function recipient(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'recipient_id');
     }
 
     public function service(): BelongsTo
@@ -36,7 +41,7 @@ class Container extends Model
         return $this->hasMany(Destination::class);
     }
 
-    public function packageTrackings(): HasMany
+    public function tracking(): HasMany
     {
         return $this->hasMany(PackageTracking::class);
     }

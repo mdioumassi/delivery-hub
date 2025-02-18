@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('package_trackings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('package_id')->constrained()->onDelete('cascade');
-            $table->foreignId('container_id')->constrained()->onDelete('cascade');
-            $table->foreignId('destination_id')->constrained()->onDelete('cascade');
+            $table->integer('package_id')->nullable();
+            $table->integer('container_id')->nullable();
+            $table->integer('destination_id')->nullable();
             $table->dateTime('tracking_date');
             $table->string('status');
             $table->text('notes')->nullable();

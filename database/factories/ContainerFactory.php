@@ -18,7 +18,8 @@ class ContainerFactory extends Factory
             'unit_price' => $this->faker->randomFloat(2, 100, 1000),
             'description' => $this->faker->sentence(),
             'status' => $this->faker->boolean(),
-            'client_id' => User::factory(),
+            'sender_id' => User::factory(),
+            'recipient_id' => User::factory(),
             'service_id' => Service::factory(),
         ];
     }

@@ -17,7 +17,7 @@ Liste des colis
             <thead>
                 <tr>
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Type
+                        Type d'envoi
                     </th>
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Poids
@@ -29,7 +29,10 @@ Liste des colis
                         Statut
                     </th>
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Client
+                        Expéditeiur
+                    </th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Récepteur
                     </th>
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Service
@@ -51,7 +54,8 @@ Liste des colis
                             {{ $package->status == 1 ? 'Actif' : 'En attente' }}
                         </span>
                     </td>
-                    <td>{{ $package->client->name}}</td>
+                    <td>{{ $package->sender->name }}</td>
+                    <td>{{ $package->recipient->name }}</td>
                     <td>{{ $package->service->type }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <a href="{{ route('packages.show', $package) }}" class="text-blue-600 hover:text-blue-900 mr-3">

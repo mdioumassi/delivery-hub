@@ -1,32 +1,63 @@
 @extends('layouts.app')
 
-@section('title', 'Créer un service')
+@section('header')
+Créer un service
+@endsection
 
 @section('content')
-<div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
-    <h1 class="text-2xl font-bold mb-6">Nouveau service</h1>
-    
-    <form action="{{ route('services.store') }}" method="POST">
-        @csrf
-        
-        <div class="space-y-4">
-            <div>
-                <label class="block text-gray-700 mb-2">Nom du service</label>
-                <input type="text" name="name" 
-                    class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    <div class="p-6 bg-white border-b border-gray-200">
+        <form action="{{ route('services.store') }}" method="POST">
+            @csrf
+            <div class="grid grid-cols-2 gap-6">
+                <div class="mb-4">
+                    <label for="type" class="block text-sm font-medium text-gray-700">Type de service</label>
+                    <select name="type" id="type" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
+                    ">
+                        <option value="">Sélectionner un type</option>
+                        <option value="Envoi aérien">Envoi aérien</option>
+                        <option value="Envoi maritime">Envoi maritime</option>
+                        <option value="terrestre"> Envoi terrestre</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="company_id" class="block text-sm font-medium text-gray-700">Entreprise</label>
+                    <select name="company_id" id="company_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
+                    ">
+                        <option value="">Sélectionner une entreprise</option>
+                        @foreach($companies as $company)
+                        <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" id="description" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>  
+                </div>
+
+                <div class="mb-4">
+                    <label for="active" class="block text-sm font-medium text-gray-700">Actif</label>
+                    <select name="is_active" id="active" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
+                    ">
+                        <option value="1">Oui</option>
+                        <option value="0">Non</option>
+                    </select>
+                </div>
+               
             </div>
 
-            <div>
-                <label class="block text-gray-700 mb-2">Description</label>
-                <textarea name="description" rows="4"
-                    class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-            </div>
 
-            <button type="submit" 
-                class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors">
-                Créer le service
-            </button>
-        </div>
-    </form>
+            <div class="mt-6">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Créer un service
+                </button>
+                <a href="{{ route('packages.index') }}" class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    Annuler
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection
