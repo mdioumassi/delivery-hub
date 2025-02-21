@@ -11,8 +11,11 @@ return new class extends Migration
         Schema::create('destinations', function (Blueprint $table) {
             $table->id();
             $table->string('country');
-            $table->foreignId('package_id')->constrained();
-            $table->foreignId('container_id')->constrained();
+            $table->date('arrival_date')->nullable();
+            $table->date('departure_date')->nullable();
+            $table->foreignId('company_id')->constrained('companies');
+            $table->integer('package_id')->nullable();
+            $table->integer('container_id')->nullable();
             $table->timestamps();
         });
     }

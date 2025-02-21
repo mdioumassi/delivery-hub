@@ -19,6 +19,7 @@ class CompanyController extends Controller
     {
         // $companies = Company::with('services')->paginate(10);
         $companies = Company::paginate(10);
+        //dd($companies);
         return view('companies.index', compact('companies'));
     }
 
@@ -58,7 +59,9 @@ class CompanyController extends Controller
 
     public function edit(Company $company)
     {
-        return view('companies.edit', compact('company'));
+        $countries = CountryLoader::countries(); 
+        $gestionnaires = User::where('type', 'gestionnaire')->get();
+        return view('companies.edit', compact('company','countries','gestionnaires'));
     }
 
     public function update(Request $request, Company $company)
@@ -69,11 +72,11 @@ class CompanyController extends Controller
             'phone_mobile' => 'nullable',
             'phone_whatsapp' => 'nullable',
             'email' => 'required|email',
-            'address' => 'required',
-            'city' => 'required',
-            'zip_code' => 'required',
-            'country' => 'required',
-            'siret' => 'required|numeric',
+            'street' => 'nullable',
+            'city' => 'nullable',
+            'zip_code' => 'nullable',
+            'country' => 'nullable',
+            'siret' => 'nullable|numeric',
             'gestionnaire_id' => 'required|exists:users,id'
         ]);
 
@@ -85,6 +88,11 @@ class CompanyController extends Controller
         $company->update($validated);
 
         return redirect()->route('companies.index')->with('success', 'Entreprise mise à jour avec succès.');
+    }
+
+    public function show(Company $company)
+    {
+        return view('companies.show', compact('company'));
     }
 
     public function destroy(Company $company)

@@ -8,6 +8,7 @@ use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\PackageTrackingController;
+use App\Http\Controllers\AllGpCompaniesController;
 
 
 Route::get('/', function () {
@@ -34,5 +35,6 @@ Route::resource('services', ServiceController::class);
 Route::resource('containers', ContainerController::class);
 Route::resource('packages', PackageController::class);
 Route::resource('destinations', DestinationController::class);
-// Route::resource('trackings', PackageTrackingController::class);//
 Route::get('/trackings/{type}', [PackageTrackingController::class, 'index'])->name('trackings.index');
+
+Route::get('gp-companies', [AllGpCompaniesController::class, 'gpCompanies'])->name('gp-companies.index');

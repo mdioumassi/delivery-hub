@@ -15,15 +15,48 @@ class UserController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
+        $query = User::query();
+    
+        // Appliquer les filtres
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+        
+        // Appliquer le tri
+        switch ($request->get('sort', 'created_desc')) {
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'created_asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'created_desc':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+        
+        $users = $query->paginate(10)->withQueryString();
+        
         return view('users.index', compact('users'));
     }
 
     public function create()
     {
-        $countries = CountryLoader::countries(); 
+        $countries = CountryLoader::countries();
         return view('users.create', compact('countries'));
     }
 
@@ -69,19 +102,23 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $countries = CountryLoader::countries();
+        return view('users.edit', compact('user', 'countries'));
     }
 
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'username' => 'required|unique:users,username,' . $user->id,
+            'civility' => 'nullable',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'firstname' => 'required',
-            'lastname' => 'required',
+            'password' => 'required|min:8',
+            'name' => 'required',
             'phone' => 'required',
-            'role' => 'required|in:admin,user,manager',
-            'type' => 'required|in:client,gestionnaire'
+            'type' => 'nullable',
+            'street' => 'nullable',
+            'city' => 'nullable',
+            'zip_code' => 'nullable',
+            'country' => 'nullable',
         ]);
 
         if ($request->filled('password')) {

@@ -33,4 +33,10 @@ class Company extends Model
     {
         return $this->hasMany(Service::class);
     }
+
+    // Relation avec les destinations
+    public function destinations(): HasMany
+    {
+        return $this->hasMany(Destination::class);
+    }
 }
