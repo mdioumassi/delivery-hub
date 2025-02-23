@@ -17,6 +17,7 @@ class AllGpCompaniesController extends Controller
     public function gpCompany($id)
     {
         $company = Company::find($id);
+
         return view('gp-companies.show', compact('company'));
     }
 }

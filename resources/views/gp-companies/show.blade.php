@@ -1,10 +1,9 @@
-
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen p-8">
+<!-- <div class="bg-gray-50 min-h-screen p-8">
   <div class="max-w-4xl mx-auto">
-    <!-- En-tête entreprise -->
+
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
       <div class="flex items-center justify-between">
         <h1 class="text-2xl font-bold text-gray-800">Samabagage</h1>
@@ -23,9 +22,8 @@
       </div>
     </div>
 
-    <!-- Services -->
     <div class="space-y-6">
-      <!-- Service Aérien -->
+    
       <div class="bg-white rounded-lg shadow-md p-6">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">Envoi aérien</h2>
         <div class="overflow-x-auto">
@@ -64,7 +62,6 @@
         </div>
       </div>
 
-      <!-- Service Maritime -->
       <div class="bg-white rounded-lg shadow-md p-6">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">Envoi maritime</h2>
         <div class="overflow-x-auto">
@@ -104,8 +101,43 @@
       </div>
     </div>
   </div>
+</div> -->
+<div class="accordion">
+  <div class="border rounded-lg mb-2">
+    <button class="accordion-btn w-full px-4 py-3 text-left bg-white hover:bg-gray-50 flex justify-between items-center">
+      <span>Section 1</span>
+      <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+    <div class="accordion-content max-h-0 overflow-hidden transition-all duration-300">
+      <div class="px-4 py-2 bg-gray-50 border-t">
+        <p>Contenu de la section...</p>
+      </div>
+    </div>
+  </div>
 </div>
+</script>
 @endsection
 @section('scripts')
+<script>
+  document.querySelectorAll('.accordion-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const content = button.nextElementSibling;
+      const isOpen = content.style.maxHeight;
 
+      // Fermer tous les autres
+      document.querySelectorAll('.accordion-content').forEach(item => {
+        item.style.maxHeight = null;
+      });
+
+      // Toggle l'état actuel
+      if (!isOpen || isOpen === '0px') {
+        content.style.maxHeight = content.scrollHeight + 'px';
+      } else {
+        content.style.maxHeight = null;
+      }
+    });
+  });
+</script>
 @endsection

@@ -105,7 +105,18 @@ class DestinationController extends Controller
      */
     public function update(Request $request, Destination $destination)
     {
-        //
+        $validated = $request->validate([
+            'country' => 'required|string|max:100',
+            'service_id' => 'required|exists:services,id',
+            'departure_date' => 'nullable|date',
+            'arrival_date' => 'nullable|date|after_or_equal:departure_date',
+            'flight_name' => 'required|string|max:50',
+        ]);
+
+        $destination->update($validated);
+
+        return redirect()->route('destinations.index')
+            ->with('success', 'La destination a été mise à jour avec succès');
     }
 
     /**
@@ -113,6 +124,9 @@ class DestinationController extends Controller
      */
     public function destroy(Destination $destination)
     {
-        //
+        $destination->delete();
+
+        return redirect()->route('destinations.index')
+            ->with('success', 'La destination a été supprimée avec succès');
     }
 }

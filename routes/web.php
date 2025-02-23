@@ -11,9 +11,9 @@ use App\Http\Controllers\AllGpCompaniesController;
 use App\Http\Controllers\PackageTrackingController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::middleware([
     'auth:sanctum',
@@ -33,6 +33,6 @@ Route::resource('packages', PackageController::class);
 Route::resource('destinations', DestinationController::class);
 Route::get('/trackings/{type}', [PackageTrackingController::class, 'index'])->name('trackings.index');
 
-Route::get('gp-companies', [AllGpCompaniesController::class, 'gpCompanies'])->name('gp-companies.index');
+Route::get('/', [AllGpCompaniesController::class, 'gpCompanies'])->name('gp-companies.index');
 Route::get('gp-companies/{id}', [AllGpCompaniesController::class, 'gpCompany'])->name('gp-companies.show');
 // Route::get('gp-companies/{company}/services', [AllGpCompaniesController::class, 'gpCompanyServices'])->name('gp-companies.services');
