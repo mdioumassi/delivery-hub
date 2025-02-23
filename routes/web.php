@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\DestinationController;
-use App\Http\Controllers\PackageTrackingController;
 use App\Http\Controllers\AllGpCompaniesController;
+use App\Http\Controllers\PackageTrackingController;
 
 
 Route::get('/', function () {
@@ -25,10 +25,6 @@ Route::middleware([
     })->name('dashboard');
 });
 
-// Route::resource('profile', UserController::class)->only(['show', 'edit', 'update']);
-
-// Route::get('/profile/{profile}/edit', [UserController::class, 'edit'])->name('profile.edit');
-// Route::put('/users/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.update-password');
 Route::resource('users', UserController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('services', ServiceController::class);
@@ -38,3 +34,5 @@ Route::resource('destinations', DestinationController::class);
 Route::get('/trackings/{type}', [PackageTrackingController::class, 'index'])->name('trackings.index');
 
 Route::get('gp-companies', [AllGpCompaniesController::class, 'gpCompanies'])->name('gp-companies.index');
+Route::get('gp-companies/{id}', [AllGpCompaniesController::class, 'gpCompany'])->name('gp-companies.show');
+// Route::get('gp-companies/{company}/services', [AllGpCompaniesController::class, 'gpCompanyServices'])->name('gp-companies.services');

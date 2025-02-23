@@ -13,9 +13,10 @@ return new class extends Migration
             $table->string('country');
             $table->date('arrival_date')->nullable();
             $table->date('departure_date')->nullable();
-            $table->foreignId('company_id')->constrained('companies');
-            $table->integer('package_id')->nullable();
-            $table->integer('container_id')->nullable();
+            $table->string('flight_name', 50);
+            $table->foreignId('service_id')->constrained('services');
+            $table->foreignId('package_id')->nullable()->constrained('packages');
+            $table->foreignId('container_id')->nullable()->constrained('containers');
             $table->timestamps();
         });
     }

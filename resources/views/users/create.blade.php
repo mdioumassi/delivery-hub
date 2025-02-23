@@ -20,8 +20,8 @@ Créer un utilisateur
                             <label for="civility" class="block text-sm font-medium text-gray-700 mb-1">Civilité</label>
                             <select id="civility" name="civility" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">Sélectionner une civilité</option>
-                                <option value="monsieur">Monsieur</option>
-                                <option value="madame">Madame</option>
+                                <option value="Monsieur">Monsieur</option>
+                                <option value="Madame">Madame</option>
                             </select>
                         </div>
 
@@ -30,6 +30,7 @@ Créer un utilisateur
                             <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type utilisateur</label>
                             <select id="type" name="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">Sélectionner un type</option>
+                                <option value="Admin">Admin</option>
                                 <option value="Expéditeur">Expéditeiur</option>
                                 <option value="Récepteur">Récepteur</option>
                                 <option value="Gestionnaire">Gestionnaire</option>

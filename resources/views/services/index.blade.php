@@ -1,66 +1,22 @@
 @extends('layouts.app')
 
 @section('header')
-    Services
+    Liste des services
 @endsection
 
 @section('content')
-<!-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6 bg-white border-b border-gray-200">
-            <div class="flex justify-end mb-4">
-                <a href="{{ route('services.create') }}" class="bg-blue-500 text-white hover:bg-blue-700 font-bold py-2 px-4 rounded">
-                    Ajouter un service
-                </a>
-            </div>
-
-            <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-            <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Entreprise</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-            @foreach($services as $service)
-            <tr>
-                <td class="px-6 py-4 whitespace-nowrap">{{ $service->type }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ $service->company->name }}</td>
-                <td class="px-6 py-4">{{ Str::limit($service->description, 80) }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                        {{ $service->is_active == true ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                        {{ $service->is_active == true ? 'Oui' : 'Non' }}
-                  
-                    </span>
-                </td>
-                <td class="px-6 py-4 space-x-2">
-                    <a href="{{ route('services.edit', $service) }}" 
-                       class="text-blue-500 hover:text-blue-700">Éditer</a>
-                    <form action="{{ route('services.destroy', $service) }}" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-500 hover:text-red-700">Supprimer</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div> -->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-xl font-semibold text-gray-800">Liste des services</h2>
-                        <a href="{{ route('services.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue transition ease-in-out duration-150">
-                            Créer un service
-                        </a>
-                    </div>
+                <div class="flex justify-end items-center mb-6">
+                    <a href="{{ route('services.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        Nouveau service
+                    </a>
+                </div>
 
                     <!-- Filtres de recherche (optionnel) -->
                     <div class="mb-6 bg-gray-50 p-4 rounded-lg">

@@ -12,7 +12,7 @@ class Destination extends Model
     use HasFactory;
 
     protected $fillable = [
-        'country', 'departure_date', 'arrival_date', 'company_id','package_id', 'container_id'
+        'country', 'flight_name', 'departure_date', 'arrival_date', 'service_id','package_id', 'container_id'
     ];
 
     public function package(): BelongsTo
@@ -25,9 +25,9 @@ class Destination extends Model
         return $this->belongsTo(Container::class);
     }
 
-    public function company(): BelongsTo
+    public function service(): BelongsTo
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Service::class);
     }
 
     public function tracking(): HasMany

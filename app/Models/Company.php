@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/Company.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,9 +33,11 @@ class Company extends Model
         return $this->hasMany(Service::class);
     }
 
-    // Relation avec les destinations
-    public function destinations(): HasMany
+
+    public function scopeSearch($query, $searchTerm)
     {
-        return $this->hasMany(Destination::class);
+        return $query->where('name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('siret', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('email', 'LIKE', "%{$searchTerm}%");
     }
 }

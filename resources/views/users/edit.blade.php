@@ -109,9 +109,10 @@
 
                         <!-- Type utilisateur -->
                         <div>
-                            <label for="user_type" class="block text-sm font-medium text-gray-700 mb-1">Type utilisateur</label>
-                            <select id="user_type" name="user_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type utilisateur</label>
+                            <select id="type" name="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                                 <option value="">Sélectionner un type</option>
+                                <option value="{{ $user->type }}" {{ $user->type == 'Admin' ? 'selected' : '' }}>Admin</option>
                                 <option value="{{ $user->type }}" {{ $user->type == 'Expéditeur' ? 'selected' : '' }}>Expéditeur</option>
                                 <option value="{{ $user->type }}" {{ $user->type == 'Récepteur' ? 'selected' : '' }}>Récepteur</option>
                                 <option value="{{ $user->type }}" {{ $user->type == 'Gestionnaire' ? 'selected' : '' }}>Gestionnaire</option>
@@ -133,7 +134,7 @@
                                 Mot de passe
                                 <span class="text-xs text-gray-500">(Laisser vide pour conserver l'actuel)</span>
                             </label>
-                            <input type="password" name="password" id="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <input type="password" name="password" id="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" value="{{ $user->password }}">
                             @error('password')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror

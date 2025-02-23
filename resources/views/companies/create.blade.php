@@ -9,7 +9,7 @@ Créer un utilisateur
     <div class="p-6 bg-white border-b border-gray-200">
         <form action="{{ route('companies.store') }}" method="POST">
             @csrf
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-3 gap-6">
                 <div class="mb-3">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nom de l'entreprise</label>
                     <input type="text" name="name" id="email" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
@@ -21,7 +21,7 @@ Créer un utilisateur
                 </div>
 
                 <div class="mb-3">
-                    <label for="street" class="block text-sm font-medium text-gray-700">Adresse</label>
+                    <label for="street" class="block text-sm font-medium text-gray-700">Rue</label>
                     <input type="text" name="street" id="street" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
                 </div>
                 <!-- <div class="grid grid-cols-3 gap-4"> -->
@@ -34,7 +34,7 @@ Créer un utilisateur
                     <label for="country" class="block text-sm font-medium text-gray-700">Pays</label>
                     <select name="country" id="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         @foreach($countries as $code => $country)
-                        <option value="{{ $code }}" @if ($code == 'fr') selected @endif>
+                        <option value="{{ $country['name'] }}" @if ( $country['name']== 'France') selected @endif>
                             {{ $country['name'] }}
                         </option>
                         @endforeach

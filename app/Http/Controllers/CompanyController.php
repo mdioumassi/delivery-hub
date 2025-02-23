@@ -18,9 +18,23 @@ class CompanyController extends Controller
     public function index()
     {
         // $companies = Company::with('services')->paginate(10);
-        $companies = Company::paginate(10);
-        //dd($companies);
+        $companies = Company::paginate(10); 
         return view('companies.index', compact('companies'));
+    }
+
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+        $companies = Company::search($searchTerm)->paginate(10);
+        
+        if($request->ajax()) {
+            return response()->json([
+                'companies' => $companies,
+                'html' => view('companies.partials.table', compact('companies'))->render()
+            ]);
+        }
+                
+        return view('companies.index', compact('companies', 'searchTerm'));
     }
 
     public function create()
@@ -90,9 +104,9 @@ class CompanyController extends Controller
         return redirect()->route('companies.index')->with('success', 'Entreprise mise à jour avec succès.');
     }
 
-    public function show(Company $company)
+    public function show(Company $compagny)
     {
-        return view('companies.show', compact('company'));
+        return view('companies.show', compact('compagny'));
     }
 
     public function destroy(Company $company)

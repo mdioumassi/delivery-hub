@@ -154,6 +154,7 @@ Créer un envoi de colis
         // Soumission du formulaire
         $('#userForm').submit(function(e) {
             e.preventDefault();
+        
             $('#userForm').submit(function(e) {
                 e.preventDefault();
 
@@ -162,13 +163,16 @@ Créer un envoi de colis
                     method: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
-                        const userType = $('#userType').val();
 
-                        // Ajout uniquement dans le select concerné
-                        $(`select[name="${userType}_id"]`).append(
-                            `<option value="${response.id}" selected>${response.name}</option>`
-                        );
-                        $('#userModal').modal('hide');
+                        if (response.ok) {
+                           const data = response.data;
+                           const userType = $('#userType').val();
+                           $(`select[name="${userType}_id"]`).append(
+                               `<option value="${data.id}" selected>${data.name}</option>`
+                           );
+                           $('#userModal').modal('hide');
+                        }
+                
                         $('#userForm')[0].reset();
                     },
                     error: function(xhr) {

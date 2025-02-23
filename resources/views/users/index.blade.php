@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-Utilisateurs
+Liste des utilisateurs
 @endsection
 
 @section('content')
@@ -9,8 +9,7 @@ Utilisateurs
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 bg-white border-b border-gray-200">
-                <div class="flex justify-between items-center mb-6">
-                    <h1 class="text-2xl font-bold">Liste des utilisateurs</h1>
+                <div class="flex justify-end items-center mb-6">
                     <a href="{{ route('users.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clip-rule="evenodd" />
@@ -56,21 +55,16 @@ Utilisateurs
             </form>
         </div>
 
-        <!-- Messages de notification -->
-        @if (session('success'))
-        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
-            <p>{{ session('success') }}</p>
-        </div>
-        @endif
-
         <!-- Tableau des utilisateurs -->
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white">
                 <thead class="bg-gray-100 text-gray-800">
                     <tr>
+                       
                         <th class="py-3 px-4 text-left">Nom</th>
+                        <th class="py-3 px-4 text-left">Civilité</th>
                         <th class="py-3 px-4 text-left">Email</th>
-                        <th class="py-3 px-4 text-left">Type</th>
+                        <th class="py-3 px-4 text-left">Profil</th>
                         <th class="py-3 px-4 text-left">Téléphone</th>
                         <th class="py-3 px-4 text-left">Ville</th>
                         <th class="py-3 px-4 text-left">Date de création</th>
@@ -79,7 +73,6 @@ Utilisateurs
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                     @forelse ($users as $user)
-                    <tr class="hover:bg-gray-50">
                         <td class="py-3 px-4">
                             <div class="flex items-center">
                                 <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-800 font-bold mr-3">
@@ -88,12 +81,15 @@ Utilisateurs
                                 {{ $user->name }}
                             </div>
                         </td>
+                        <td class="py-3 px-4">{{ $user->civility }}</td>
                         <td class="py-3 px-4">{{ $user->email }}</td>
                         <td class="py-3 px-4">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                {{ $user->user_type == 'admin' ? 'bg-purple-100 text-purple-800' : '' }}
-                                                {{ $user->user_type == 'client' ? 'bg-green-100 text-green-800' : '' }}
-                                                {{ $user->user_type == 'employee' ? 'bg-blue-100 text-blue-800' : '' }}">
+                                                {{ $user->type == 'Admin' ? 'bg-purple-100 text-purple-800' : '' }}
+                                                {{ $user->type == 'Gestionnaire' ? 'bg-green-100 text-green-800' : '' }}
+                                                {{ $user->type == 'Expéditeur' ? 'bg-blue-100 text-blue-800' : '' }}
+                                                {{ $user->type == 'Récepteur' ? 'bg-blue-100 text-blue-800' : '' }}">
+                                
                                 {{ ucfirst($user->type) }}
                             </span>
                         </td>

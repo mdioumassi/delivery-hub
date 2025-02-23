@@ -39,11 +39,12 @@ Créer un service
 
                 <div class="mb-4">
                     <label for="active" class="block text-sm font-medium text-gray-700">Actif</label>
-                    <select name="is_active" id="active" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm
-                    ">
-                        <option value="1">Oui</option>
-                        <option value="0">Non</option>
-                    </select>
+                    <div class="flex items-center">
+                            <select name="is_active" id="is_active" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
+                                <option value="1">Actif</option>
+                                <option value="0">Inactif</option>
+                            </select>
+                        </div>
                 </div>
                
             </div>

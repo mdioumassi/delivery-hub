@@ -13,4 +13,10 @@ class AllGpCompaniesController extends Controller
         $companies = Company::all();
         return view('gp-companies.index', compact('companies'));
     }
+
+    public function gpCompany($id)
+    {
+        $company = Company::find($id);
+        return view('gp-companies.show', compact('company'));
+    }
 }

@@ -34,4 +34,10 @@ class Service extends Model
     {
         return $this->hasMany(Package::class);
     }
+
+    // Relation avec les destinations
+    public function destinations(): HasMany
+    {
+        return $this->hasMany(Destination::class);
+    }
 }
