@@ -66,9 +66,9 @@ class DestinationController extends Controller
     public function create()
     {
         $countries = CountryLoader::countries();
-        $services = Service::all();
+        $companies = Company::with('services')->get();
 
-        return view('destinations.create', compact('countries', 'services'));
+        return view('destinations.create', compact('countries', 'companies'));
     }
 
 

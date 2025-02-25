@@ -26,3 +26,10 @@
     </div>
 </div>
 @endif
+<!-- @if ($service->destinations->count() === 0)
+<div class="border rounded-lg mb-2">
+    <button class="accordion-btn w-full px-4 py-3 text-left bg-white hover:bg-gray-50 flex justify-between items-center">
+        <p text-sm text-gray-500>Aucun service disponible</p>
+    </button>
+</div>
+@endif -->

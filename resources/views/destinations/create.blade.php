@@ -18,23 +18,29 @@ Ajouter des destinations
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                                 <!-- Pays -->
                                 <div>
-                                    <label for="country_0" class="block text-sm font-medium text-gray-700 mb-1">Pays</label>
-                                    <select name="destinations[0][country]" id="country_0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                                        @foreach($countries as $code => $country)
-                                        <option value="{{  $country['name'] }}" @if ( $country['name']=='France' ) selected @endif>
-                                            {{ $country['name'] }}
-                                        </option>
-                                        @endforeach
-                                    </select>
+                                    <label for="country_0" class="block text-sm font-medium text-gray-700 mb-1">Pays< de destination</label>
+                                            <select name="destinations[0][country]" id="country_0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                                                @foreach($countries as $code => $country)
+                                                <option value="{{  $country['name'] }}" @if ( $country['name']=='France' ) selected @endif>
+                                                    {{ $country['name'] }}
+                                                </option>
+                                                @endforeach
+                                            </select>
                                 </div>
 
                                 <!-- Services -->
                                 <div>
                                     <label for="compagny_0" class="block text-sm font-medium text-gray-700 mb-1">Service</label>
-                                    <select name="destinations[0][service_id]" id="compagny_0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                                    <select class="fmt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" id="service_id" name="destinations[0][service_id]" required>
                                         <option value="">Sélectionner un service</option>
-                                        @foreach($services as $service)
-                                        <option value="{{ $service->id }}">{{ $service->type }}</option>
+                                        @foreach($companies as $company)
+                                        <optgroup label="{{ $company->name }} ({{ $company->country }})">
+                                            @foreach($company->services as $service)
+                                            <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>
+                                                {{ $service->type }}
+                                            </option>
+                                            @endforeach
+                                        </optgroup>
                                         @endforeach
                                     </select>
                                 </div>
@@ -100,68 +106,68 @@ Ajouter des destinations
 @endsection
 @section('scripts')
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let destinationsCount = 1;
-            const container = document.getElementById('destinations-container');
-            const template = container.querySelector('.destination-item');
-            
-            // Fonction pour ajouter une nouvelle destination
-            document.getElementById('add-destination').addEventListener('click', function() {
-                const newDestination = template.cloneNode(true);
-                
-                // Mise à jour des ID et names pour la nouvelle destination
-                const inputs = newDestination.querySelectorAll('input, select');
-                inputs.forEach(input => {
-                    const name = input.getAttribute('name');
-                    const id = input.getAttribute('id');
-                    
-                    if (name) {
-                        input.setAttribute('name', name.replace('[0]', '[' + destinationsCount + ']'));
-                    }
-                    
-                    if (id) {
-                        input.setAttribute('id', id.replace('_0', '_' + destinationsCount));
-                    }
-                    
-                    // Réinitialiser les valeurs
-                    input.value = '';
-                });
-                
-                // Mettre à jour les labels
-                const labels = newDestination.querySelectorAll('label');
-                labels.forEach(label => {
-                    const forAttr = label.getAttribute('for');
-                    if (forAttr) {
-                        label.setAttribute('for', forAttr.replace('_0', '_' + destinationsCount));
-                    }
-                });
-                
-                // Afficher le bouton de suppression
-                const removeButton = newDestination.querySelector('.remove-destination');
-                removeButton.style.display = 'inline-flex';
-                
-                // Ajouter l'événement de suppression
-                removeButton.addEventListener('click', function() {
-                    container.removeChild(newDestination);
-                });
-                
-                // Ajouter au formulaire
-                container.appendChild(newDestination);
-                destinationsCount++;
-                
-                // Afficher le bouton de suppression pour la première destination si nous avons plus d'une destination
-                if (destinationsCount > 1) {
-                    container.querySelector('.destination-item .remove-destination').style.display = 'inline-flex';
+    document.addEventListener('DOMContentLoaded', function() {
+        let destinationsCount = 1;
+        const container = document.getElementById('destinations-container');
+        const template = container.querySelector('.destination-item');
+
+        // Fonction pour ajouter une nouvelle destination
+        document.getElementById('add-destination').addEventListener('click', function() {
+            const newDestination = template.cloneNode(true);
+
+            // Mise à jour des ID et names pour la nouvelle destination
+            const inputs = newDestination.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                const name = input.getAttribute('name');
+                const id = input.getAttribute('id');
+
+                if (name) {
+                    input.setAttribute('name', name.replace('[0]', '[' + destinationsCount + ']'));
+                }
+
+                if (id) {
+                    input.setAttribute('id', id.replace('_0', '_' + destinationsCount));
+                }
+
+                // Réinitialiser les valeurs
+                input.value = '';
+            });
+
+            // Mettre à jour les labels
+            const labels = newDestination.querySelectorAll('label');
+            labels.forEach(label => {
+                const forAttr = label.getAttribute('for');
+                if (forAttr) {
+                    label.setAttribute('for', forAttr.replace('_0', '_' + destinationsCount));
                 }
             });
-            
-            // Gérer la suppression pour la première destination
-            const firstRemoveButton = template.querySelector('.remove-destination');
-            firstRemoveButton.addEventListener('click', function() {
-                if (container.querySelectorAll('.destination-item').length > 1) {
-                    container.removeChild(template);
-                }
+
+            // Afficher le bouton de suppression
+            const removeButton = newDestination.querySelector('.remove-destination');
+            removeButton.style.display = 'inline-flex';
+
+            // Ajouter l'événement de suppression
+            removeButton.addEventListener('click', function() {
+                container.removeChild(newDestination);
             });
+
+            // Ajouter au formulaire
+            container.appendChild(newDestination);
+            destinationsCount++;
+
+            // Afficher le bouton de suppression pour la première destination si nous avons plus d'une destination
+            if (destinationsCount > 1) {
+                container.querySelector('.destination-item .remove-destination').style.display = 'inline-flex';
+            }
         });
-    </script>
-@endsection 
+
+        // Gérer la suppression pour la première destination
+        const firstRemoveButton = template.querySelector('.remove-destination');
+        firstRemoveButton.addEventListener('click', function() {
+            if (container.querySelectorAll('.destination-item').length > 1) {
+                container.removeChild(template);
+            }
+        });
+    });
+</script>
+@endsection
