@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Package extends Model
 {
     use HasFactory;
+    use Sluggable;
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'type',
+                'onUpdate' => true
+            ]
+        ];
+    }
 
     protected $table = 'packages'; // Spécifie explicitement le nom de la table
 
@@ -22,6 +34,10 @@ class Package extends Model
         'service_id',
         'sender_id',
         'recipient_id',
+        'comment',
+        'date_dispatch',
+        'date_delivery',
+        'total_price',
     ];
 
     /**
@@ -49,7 +65,7 @@ class Package extends Model
     public static function generateTrackingNumber()
     {
         // Préfixe du pays et date du jour
-        $prefix = 'FR-' . date('Ymd');
+        $prefix = 'COL-' . date('Ymd');
 
         // Récupérer le dernier numéro utilisé aujourd'hui
         $lastPackage = self::where('tracking_number', 'like', $prefix . '-%')

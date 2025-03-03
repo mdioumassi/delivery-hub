@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
-use App\Models\User;
+use App\Models\Person;
 use Illuminate\Http\Request;
 use Rinvex\Country\CountryLoader;
 
@@ -17,8 +17,8 @@ class CompanyController extends Controller
 
     public function index()
     {
-        // $companies = Company::with('services')->paginate(10);
-        $companies = Company::paginate(10); 
+        $companies = Company::with('gestionnaire')->paginate(10); 
+
         return view('companies.index', compact('companies'));
     }
 
@@ -41,7 +41,8 @@ class CompanyController extends Controller
     {
         $countries = CountryLoader::countries(); 
 
-        $gestionnaires = User::where('type', 'gestionnaire')->get();
+        $gestionnaires = Person::where('type', 'gestionnaire')->get();
+
         return view('companies.create', compact('countries','gestionnaires'));
     }
 
@@ -74,7 +75,8 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         $countries = CountryLoader::countries(); 
-        $gestionnaires = User::where('type', 'gestionnaire')->get();
+        $gestionnaires = Person::where('type', 'gestionnaire')->get();
+
         return view('companies.edit', compact('company','countries','gestionnaires'));
     }
 
@@ -98,7 +100,7 @@ class CompanyController extends Controller
             $path = $request->file('logo')->store('logos', 'public');
             $validated['logo_url'] = $path;
         }
-
+//dd($validated);
         $company->update($validated);
 
         return redirect()->route('companies.index')->with('success', 'Entreprise mise à jour avec succès.');

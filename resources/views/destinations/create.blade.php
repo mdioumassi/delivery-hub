@@ -61,8 +61,13 @@ Ajouter des destinations
 
                                 <!-- Nom du vol -->
                                 <div>
-                                    <label for="flight_0" class="block text-sm font-medium text-gray-700 mb-1">Nom du vol</label>
-                                    <input type="text" name="destinations[0][flight_name]" id="flight_0" placeholder="ex: AIR FRANCE" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                                    <label for="flight_0" class="block text-sm font-medium text-gray-700 mb-1">Moyen de destination</label>
+                                    <select  name="destinations[0][flight_name]" id="flight_0"  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                                        <option value="">Sélectionner un moyen de destination</option>
+                                        <option value="avion">Par Avion</option>
+                                        <option value="bateau">Par bateau</option>
+                                        <option value="route">Par la route</option>
+                                    </select>
                                 </div>
                             </div>
 

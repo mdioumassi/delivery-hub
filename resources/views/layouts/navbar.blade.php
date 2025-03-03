@@ -7,8 +7,8 @@
                                 Service GP
                             </a>
                         </div>
-                        <a href="{{ route('users.index') }}"
-                            class="px-4 py-4 @if(request()->routeIs('users.index')) border-b-2 border-blue-500 text-blue-600 @else text-gray-600 @endif">
+                        <a href="{{ route('persons.index') }}"
+                            class="px-4 py-4 @if(request()->routeIs('persons.index')) border-b-2 border-blue-500 text-blue-600 @else text-gray-600 @endif">
                             Utilisateurs
                         </a>
                         <a href="{{ route('companies.index') }}"

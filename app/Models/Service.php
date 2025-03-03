@@ -2,6 +2,8 @@
 // app/Models/Service.php
 namespace App\Models;
 
+use App\Enums\ServiceTypeEnum;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,12 +12,26 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Service extends Model
 {
     use HasFactory;
+    use Sluggable;
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'type',
+                'onUpdate' => true
+            ]
+        ];
+    }
 
     protected $fillable = [
         'type', 'description', 'is_active', 'company_id',
     ];
 
-    protected $casts = ['is_active' => 'boolean'];
+    protected $casts = [
+        'is_active' => 'boolean',
+        // 'type' => ServiceTypeEnum::class,
+    ];
 
     // Relation avec l'entreprise
     public function company(): BelongsTo

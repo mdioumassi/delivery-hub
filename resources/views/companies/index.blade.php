@@ -36,7 +36,10 @@ Liste des companies
                         <thead class="bg-gray-100">
                             <tr>
                                 <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Nom
+                                    Nom de l'entreprise
+                                </th>
+                                <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Pays de l'entreprise
                                 </th>
                                 <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Email
@@ -48,13 +51,7 @@ Liste des companies
                                     Portable
                                 </th>
                                 <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    WhatsApp
-                                </th>
-                                <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Ville
-                                </th>
-                                <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    SIRET
+                                    Gestionnaire
                                 </th>
                                 <th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Services
@@ -71,6 +68,9 @@ Liste des companies
                                     {{ $company->name }}
                                 </td>
                                 <td class="py-4 px-4 text-sm text-gray-500">
+                                    {{ $company->country }}
+                                </td>
+                                <td class="py-4 px-4 text-sm text-gray-500">
                                     {{ $company->email }}
                                 </td>
                                 <td class="py-4 px-4 text-sm text-gray-500">
@@ -80,13 +80,7 @@ Liste des companies
                                     {{ $company->phone_mobile }}
                                 </td>
                                 <td class="py-4 px-4 text-sm text-gray-500">
-                                    {{ $company->phone_whatsapp }}
-                                </td>
-                                <td class="py-4 px-4 text-sm text-gray-500">
-                                    {{ $company->city }}
-                                </td>
-                                <td class="py-4 px-4 text-sm text-gray-500">
-                                    {{ $company->siret }}
+                                    {{ $company->gestionnaire->fullname ? $company->gestionnaire->fullname : 'Non assigné' }}
                                 </td>
                                 <td class="py-4 px-4 text-sm text-gray-500">
                                     @if($company->services && $company->services->count() > 0)
@@ -102,10 +96,10 @@ Liste des companies
                                     </ul>
                                     @else
                                     <!-- <p class="text-sm text-gray-500">Aucun service disponible</p> -->
-                                     @php $companyId = $company->id; @endphp
-                                     @include('companies.services-table-cell')  
+                                    @php $companyId = $company->id; @endphp
+                                    @include('companies.services-table-cell')
                                     <button type="button"
-                                        onclick="openServiceModal({{ $companyId }})"
+                                        onclick="openServicesModal()"
                                         class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md">
                                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -114,7 +108,7 @@ Liste des companies
                                     </button>
                                     @endif
                                 </td>
-                                
+
                                 <td class="py-4 px-4 text-sm text-gray-500 flex gap-2">
                                     <a href="{{ route('companies.show', $company) }}" class="text-blue-600 hover:text-blue-900">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -162,22 +156,67 @@ Liste des companies
 @endsection
 @section('scripts')
 <script>
-function openServiceModal(companyId) {
-    document.getElementById('serviceModal').classList.remove('hidden');
-    document.getElementById('company_id').value = companyId;
-}
+    let serviceIndex = 0;
 
-function closeServiceModal() {
-    document.getElementById('serviceModal').classList.add('hidden');
-    document.getElementById('serviceForm').reset();
-}
-
-// Close modal when clicking outside
-window.onclick = function(event) {
-    let modal = document.getElementById('serviceModal');
-    if (event.target == modal) {
-        closeServiceModal();
+    function openServicesModal() {
+        document.getElementById('services-modal').classList.remove('hidden');
     }
-}
+
+    function closeServicesModal() {
+        document.getElementById('services-modal').classList.add('hidden');
+    }
+
+    function addServiceField() {
+        serviceIndex++;
+
+        const container = document.getElementById('services-container');
+        const newServiceItem = document.createElement('div');
+        newServiceItem.className = 'service-item mb-4 p-4 border border-gray-200 rounded-md';
+        newServiceItem.innerHTML = `
+            <div class="flex justify-between items-center mb-2">
+                <h4 class="text-sm font-medium text-gray-700">Service #${serviceIndex + 1}</h4>
+                <button type="button" onclick="removeServiceField(this)" class="text-red-500 hover:text-red-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 gap-4">
+                  <div>
+                    <label for="service_type_${serviceIndex}" class="block text-sm font-medium text-gray-700">Type de service</label>
+                    <select name="services[${serviceIndex}][type]" id="service_type_${serviceIndex}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                        <option value="">Sélectionner un type</option>
+                        @foreach(\App\Enums\ServiceTypeEnum::cases() as $type)
+                            <option
+                                value="{{ $type->value }}"
+                                {{ old('type') === $type->value ? 'selected' : '' }}>
+                                {{ $type->label() }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="service_description_${serviceIndex}" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="services[${serviceIndex}][description]" id="service_description_${serviceIndex}" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea>
+                </div>
+                <div>
+                    <label for="service_is_active_${serviceIndex}" class="block text-sm font-medium text-gray-700">Actif</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <select name="services[${serviceIndex}][is_active]" id="service_is_active_${serviceIndex}" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                            <option value="1">Actif</option>
+                            <option value="0">Inactif</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(newServiceItem);
+    }
+
+    function removeServiceField(button) {
+        const serviceItem = button.closest('.service-item');
+        serviceItem.remove();
+    }
 </script>
 @endsection

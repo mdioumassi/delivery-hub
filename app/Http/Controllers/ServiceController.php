@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ServiceTypeEnum;
 use App\Models\Company;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
 class ServiceController extends Controller
 {
@@ -50,9 +52,11 @@ class ServiceController extends Controller
 
     public function create()
     {
-        $companies = Company::all();
-        $services = Service::all();
-        return view('services.create', compact('companies', 'services'));
+        return view('services.create', [
+            'companies' => Company::all(),
+            'services' => Service::all(),
+            'types' => ServiceTypeEnum::cases(),
+        ]);
     }
 
     public function store(Request $request)
@@ -72,8 +76,8 @@ class ServiceController extends Controller
     public function edit(Service $service)
     {
         $companies = Company::all();
-        $services = Service::all();
-        return view('services.edit', compact('service', 'companies', 'services'));
+        $types = ServiceTypeEnum::cases();
+        return view('services.edit', compact('service', 'companies', 'types'));
     }
 
     public function update(Request $request, Service $service)

@@ -127,12 +127,12 @@ Modifier une entreprise
                             <label for="gestionnaire_id" class="block text-sm font-medium text-gray-700">Gestionnaire</label>
                             <select name="gestionnaire_id" id="gestionnaire_id"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                <option value="">Sélectionner un gestionnaire</option>
+                                    <option value="">Sélectionner un gestionnaire</option>
                                 @foreach($gestionnaires as $gestionnaire)
-                                <option value="{{ $gestionnaire->id }}"
-                                    {{ old('gestionnaire_id', $company->gestionnaire_id) == $gestionnaire->id ? 'selected' : '' }}>
-                                    {{ $gestionnaire->name }}
-                                </option>
+                                    <option value="{{ $gestionnaire->id }}"
+                                        {{ old('gestionnaire_id', $company->gestionnaire_id) == $gestionnaire->id ? 'selected' : '' }}>
+                                        {{ $gestionnaire->fullname }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('gestionnaire_id')

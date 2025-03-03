@@ -3,8 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\CivilityEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -27,16 +30,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'civility',
-        'name',
         'email',
-        'password',
-        'type',
-        'phone',
-        'street',
-        'city',
-        'zip_code',
-        'country',
+        'password'
+    ];
+
+    protected $casts = [
+        'civility' => CivilityEnum::class,
     ];
 
     public function companies(): HasMany
@@ -52,6 +51,11 @@ class User extends Authenticatable
     public function containers(): HasMany
     {
         return $this->hasMany(Container::class, 'sender_id');
+    }
+
+    public function person(): HasOne
+    {
+        return $this->hasOne(Person::class);
     }
     /**
      * The attributes that should be hidden for serialization.
@@ -84,6 +88,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+
         ];
     }
 }

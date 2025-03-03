@@ -11,11 +11,18 @@ return new class extends Migration
         Schema::create('containers', function (Blueprint $table) {
             $table->id();
             $table->string('type'); // À adapter selon vos besoins
-            $table->decimal('unit_price', 10, 2);
-            $table->boolean('status');
+            $table->string('slug')->unique();
+            $table->string('tracking_number')->unique();
+            $table->string('weight');
+            $table->integer('unit_price');
+            $table->integer('total_price')->nullable();
+            $table->date('date_dispatch')->nullable();
+            $table->date('date_delivery')->nullable();
+            $table->string('status');
+            $table->string('comment')->nullable();
             $table->foreignId('sender_id')->constrained('users');
             $table->foreignId('recipient_id')->constrained('users');
-            $table->foreignId('service_id')->constrained()->onDelete('cascade');
+            $table->foreignId('service_id')->constrained();
             $table->timestamps();
         });
     }

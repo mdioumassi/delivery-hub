@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->string('logo_url')->nullable();
             $table->string('phone_fixe')->nullable();
             $table->string('phone_mobile')->nullable();
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->string('zip_code');
             $table->string('country')->default('France');
             $table->string('siret')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->foreignId('gestionnaire_id')->constrained('users'); // <-- "users" au lieu de "user"
             $table->timestamps();
         });

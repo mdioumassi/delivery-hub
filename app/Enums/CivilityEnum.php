@@ -4,16 +4,16 @@ namespace App\Enums;
 
 enum CivilityEnum: string
 {
-    case Monsieur = 'Mr';
-    case Mademoiselle = 'Mlle';
-    case Madame = 'Mme';
+    case MONSIEUR = 'mr';
+    case MADEMOISELLE = 'mlle';
+    case MADAME = 'mme';
 
     public function label(): string
     {
-        return match ($this) {
-            self::Monsieur => 'Monsieur',
-            self::Mademoiselle => 'Mademoiselle',
-            self::Madame => 'Madame',
+        return match($this) {
+            self::MONSIEUR => 'Monsieur',
+            self::MADEMOISELLE => 'Mademoiselle',
+            self::MADAME => 'Madame',
         };
     }
 }

@@ -19,9 +19,9 @@ Modifier un service
                                 <label for="type" class="block text-sm font-medium text-gray-700 mb-2">Type de service</label>
                                 <select id="type" name="type" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     <option value="" disabled {{ old('type', $service->type) ? '' : 'selected' }}>Sélectionner un type</option>
-                                    @foreach($services as $service)
-                                        <option value="{{ $service->type }}" {{ old('type', $service->type) == $service->type ? 'selected' : '' }}>
-                                            {{ $service->type }}
+                                    @foreach($types as $type)
+                                        <option value="{{ $type->value }}" {{ old('type', $service->type) == $type->value ? 'selected' : '' }}>
+                                            {{ $type->label() }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -38,7 +38,7 @@ Modifier un service
                                     @foreach($companies as $compagny)
                                         <option value="{{ $compagny->id }}" {{ old('company_id', $service
                                         ->company_id) == $compagny->id ? 'selected' : '' }}>
-                                            {{ $compagny->name }}   
+                                            {{ $compagny->name }} ({{ $compagny->country }})   
 
                                         </option>
                                     @endforeach

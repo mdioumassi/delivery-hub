@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CivilityEnum;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -57,6 +58,7 @@ class UserController extends Controller
     public function create()
     {
         $countries = CountryLoader::countries();
+
         return view('users.create', compact('countries'));
     }
 

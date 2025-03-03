@@ -20,7 +20,7 @@ Liste des utilisateurs
 
                 <!-- Filtres et recherche -->
                 <div class="mb-6 bg-gray-50 p-4 rounded-lg">
-                    <form action="{{ route('users.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <form action="{{ route('persons.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
                             <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Recherche</label>
                             <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Nom ou email" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -48,7 +48,7 @@ Liste des utilisateurs
                                 Filtrer
                             </button>
                             
-                            <a href="{{ route('users.index') }}" class="w-full ml-4 bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Réinitialiser</a>
+                            <a href="{{ route('persons.index') }}" class="w-full ml-4 bg-gray-400 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Réinitialiser</a>
                         </div>
                 </div>
             </div>
@@ -66,50 +66,47 @@ Liste des utilisateurs
                         <th class="py-3 px-4 text-left">Email</th>
                         <th class="py-3 px-4 text-left">Profil</th>
                         <th class="py-3 px-4 text-left">Téléphone</th>
-                        <th class="py-3 px-4 text-left">Ville</th>
+                        <th class="py-3 px-4 text-left">Localisation</th>
                         <th class="py-3 px-4 text-left">Date de création</th>
                         <th class="py-3 px-4 text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    @forelse ($users as $user)
+                    @forelse ($persons as $person)
                         <td class="py-3 px-4">
                             <div class="flex items-center">
                                 <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-800 font-bold mr-3">
-                                    {{ substr($user->name, 0, 1) }}
+                                    {{ substr($person->fullname, 0, 1) }}
                                 </div>
-                                {{ $user->name }}
+                                {{ $person->fullname }}
                             </div>
                         </td>
-                        <td class="py-3 px-4">{{ $user->civility }}</td>
-                        <td class="py-3 px-4">{{ $user->email }}</td>
+                        <td class="py-3 px-4">{{ $person->civility }}</td>
+                        <td class="py-3 px-4">{{ $person->user->email }}</td>
                         <td class="py-3 px-4">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                {{ $user->type == 'Admin' ? 'bg-purple-100 text-purple-800' : '' }}
-                                                {{ $user->type == 'Gestionnaire' ? 'bg-green-100 text-green-800' : '' }}
-                                                {{ $user->type == 'Expéditeur' ? 'bg-blue-100 text-blue-800' : '' }}
-                                                {{ $user->type == 'Récepteur' ? 'bg-blue-100 text-blue-800' : '' }}">
-                                
-                                {{ ucfirst($user->type) }}
-                            </span>
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    {{ $person->type == 'admin' ? 'bg-blue-100 text-blue-800' : 
+                                       ($person->type == 'gestionnaire' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800') }}">
+                                    {{ $person->type }}
+                                </span>
                         </td>
-                        <td class="py-3 px-4">{{ $user->phone ?? '-' }}</td>
-                        <td class="py-3 px-4">{{ $user->city ?? '-' }}</td>
-                        <td class="py-3 px-4">{{ $user->created_at->format('d/m/Y') }}</td>
+                        <td class="py-3 px-4">{{ $person->phone ?? '-' }}</td>
+                        <td class="py-3 px-4"> {{ $person->city }}, {{ $person->country }}</td>
+                        <td class="py-3 px-4">{{ $person->created_at->format('d/m/Y') }}</td>
                         <td class="py-3 px-4 text-center">
                             <div class="flex justify-center space-x-2">
-                                <a href="{{ route('users.show', $user) }}" class="text-blue-600 hover:text-blue-900" title="Voir">
+                                <a href="{{ route('persons.show', $person) }}" class="text-blue-600 hover:text-blue-900" title="Voir">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
                                 </a>
-                                <a href="{{ route('users.edit', $user) }}" class="text-yellow-600 hover:text-yellow-900" title="Modifier">
+                                <a href="{{ route('persons.edit', $person) }}" class="text-yellow-600 hover:text-yellow-900" title="Modifier">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
                                 </a>
-                                <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?');">
+                                <form action="{{ route('persons.destroy', $person) }}" method="POST" class="inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-900" title="Supprimer">
@@ -134,7 +131,7 @@ Liste des utilisateurs
 
         <!-- Pagination -->
         <div class="mt-6">
-            {{ $users->withQueryString()->links() }}
+            {{ $persons->withQueryString()->links() }}
         </div>
     </div>
 </div>
