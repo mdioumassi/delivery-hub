@@ -78,7 +78,7 @@ Liste des utilisateurs
                                 <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-800 font-bold mr-3">
                                     {{ substr($user->name, 0, 1) }}
                                 </div>
-                                {{ $user->name }}
+                                {{ $user->person->fullname }}
                             </div>
                         </td>
                         <td class="py-3 px-4">{{ $user->civility }}</td>

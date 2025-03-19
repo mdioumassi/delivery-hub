@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-Créer un utilisateur
+Créer une entreprise
 @endsection
 
 @section('content')

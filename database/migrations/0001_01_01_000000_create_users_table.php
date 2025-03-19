@@ -22,6 +22,21 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('persons', function (Blueprint $table) {
+            $table->id();
+            $table->string('fullname');
+            $table->string('type');
+            $table->string('civility'); // M., Mme, Mlle
+            $table->string('phone')->unique();
+            $table->string('street')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('country');
+            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -36,6 +51,7 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+        
     }
 
     /**

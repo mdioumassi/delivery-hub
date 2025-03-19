@@ -59,7 +59,7 @@ class CompanyController extends Controller
             'zip_code' => 'nullable',
             'country' => 'nullable',
             'siret' => 'nullable|numeric',
-            'gestionnaire_id' => 'required|exists:users,id'
+            'gestionnaire_id' => 'required|exists:persons,id'
         ]);
 
         if ($request->hasFile('logo')) {

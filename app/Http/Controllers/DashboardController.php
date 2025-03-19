@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Models\Package;
 use App\Models\Container;
 use App\Models\Destination;
+use App\Models\Person;
 
 class DashboardController extends Controller
 {
@@ -16,7 +17,7 @@ class DashboardController extends Controller
     {
         // Récupération du nombre de chaque élément
         $data = [
-            'countUtilisateurs' => User::count(),
+            'countUtilisateurs' => Person::count(),
             'countEntreprises' => Company::count(),
             'countServices' => Service::count(),
             'countColis' => Package::count(),

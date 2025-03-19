@@ -43,7 +43,7 @@ class CompanyServiceController extends Controller
             $service->save();
         }
 
-        return redirect()->route('company.show', $company->id)
+        return redirect()->route('companies.index', $company->id)
             ->with('success', 'Services ajoutés avec succès.');
     }
 }

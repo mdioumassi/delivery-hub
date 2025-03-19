@@ -24,7 +24,7 @@ class Company extends Model
 
     protected $fillable = [
         'name', 'logo_url', 'phone_fixe', 'phone_mobile', 
-        'phone_whatssap', 'email', 'street',
+        'phone_whatsapp', 'email', 'street',
         'gestionnaire_id', 'siret', 'city', 'zip_code', 'country', 'is_active',
         'date_dispatch', 'date_delivery', 'total_price', 'comment'
     ];

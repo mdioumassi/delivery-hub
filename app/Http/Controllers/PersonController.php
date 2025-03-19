@@ -21,9 +21,42 @@ class PersonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {  
-        $persons = Person::with('user')->paginate(10);
+        $query = Person::query()->with('user');
+    
+        // Appliquer les filtres
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+        
+        // Appliquer le tri
+        switch ($request->get('sort', 'created_desc')) {
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'created_asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'created_desc':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+        
+        $persons = $query->paginate(10)->withQueryString();
+   
         return view('persons.index', compact('persons'));
     }
 
@@ -113,13 +146,13 @@ class PersonController extends Controller
             'fullname' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'email' => 'required|email|unique:users,email,' . $person->user_id,
-            'street' => 'required|string',
+            'street' => 'string',
             'city' => 'required|string',
             'zip_code' => 'required|string',
             'country' => 'required|string',
             'password' => 'nullable|min:8|confirmed',
         ]);
-    
+
         // Mettre à jour les informations de la personne
         $person->update([
             'civility' => $validatedData['civility'],

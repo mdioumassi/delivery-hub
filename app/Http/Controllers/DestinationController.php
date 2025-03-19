@@ -19,45 +19,40 @@ class DestinationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    // public function index()
-    // {
-    //     $countries = CountryLoader::countries();
-    //     $destinations = Destination::paginate(10);
-    //     $companies = Company::all();
-
-
-    //     return view('destinations.index', compact('destinations', 'companies', 'countries'));
-    // }
 
     public function index(Request $request)
     {
-        $query = Destination::query()->with('service');
+        $query = Destination::query()
+            ->join('services', 'destinations.service_id', '=', 'services.id')
+            ->join('companies', 'services.company_id', '=', 'companies.id')
+            ->select(
+                'destinations.*',
+                'services.type as service_type',
+                'companies.name as company_name'
+            );
 
-        // Filtrage par pays
-        if ($request->filled('country')) {
-            $query->where('country', $request->country);
+        // Filtres
+        if ($request->filled('pays')) {
+            $query->where('destinations.country', $request->pays);
         }
 
-        // Filtrage par entreprise
-        if ($request->filled('service_id')) {
-            $query->where('service_id', $request->service_id);
+        if ($request->filled('service')) {
+            $query->where('services.id', $request->service);
         }
 
-        // Filtrage par date de départ
-        if ($request->filled('departure_date')) {
-            $query->where('departure_date', '>=', $request->departure_date);
+        if ($request->filled('date_depart')) {
+            $query->whereDate('destinations.departure_date', '>=', $request->date_depart);
         }
 
-        // Récupérer les destinations paginées
-        $destinations = $query->orderBy('departure_date', 'asc')->paginate(10);
-
-        // Récupérer la liste des pays distincts pour le filtre
-        $countriesOptions = Destination::distinct('country')->pluck('country')->toArray();
-
-        // Récupérer toutes les entreprises pour le filtre
+        // Récupération des données pour les filtres
+        $countries = Destination::distinct('country')->pluck('country');
         $services = Service::all();
 
-        return view('destinations.index', compact('destinations', 'countriesOptions', 'services'));
+        // Regrouper par type de service
+        $destinations = $query->get()
+            ->groupBy('service_type');
+
+        return view('destinations.index', compact('destinations', 'countries', 'services'));
     }
 
     /**
@@ -91,6 +86,30 @@ class DestinationController extends Controller
             ->with('success', 'Les destinations ont été ajoutées avec succès');
     }
 
+    // Méthodes supplémentaires dans DestinationController.php
+    public function edit(Destination $destination)
+    {
+        $services = Service::all();
+        $countries = Destination::select('country')->distinct()->get()->pluck('country');
+
+        return view('destinations.edit', compact('destination', 'services', 'countries'));
+    }
+
+    public function update(Request $request, Destination $destination)
+    {
+        $validated = $request->validate([
+            'country' => 'required|string',
+            'service_id' => 'required|exists:services,id',
+            'departure_date' => 'required|date',
+            'arrival_date' => 'nullable|date',
+            'transport_means' => 'required|string',
+        ]);
+
+        $destination->update($validated);
+
+        return redirect()->route('destinations.index')
+            ->with('success', 'Destination mise à jour avec succès');
+    }
 
     /**
      * Display the specified resource.
@@ -101,32 +120,11 @@ class DestinationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Destination $destination)
-    {
-        $validated = $request->validate([
-            'country' => 'required|string|max:100',
-            'service_id' => 'required|exists:services,id',
-            'departure_date' => 'nullable|date',
-            'arrival_date' => 'nullable|date|after_or_equal:departure_date',
-            'flight_name' => 'required|string|max:50',
-        ]);
-
-        $destination->update($validated);
-
-        return redirect()->route('destinations.index')
-            ->with('success', 'La destination a été mise à jour avec succès');
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Destination $destination)
     {
         $destination->delete();
-
-        return redirect()->route('destinations.index')
-            ->with('success', 'La destination a été supprimée avec succès');
+        return redirect()->back()->with('success', 'Destination supprimée avec succès');
     }
 }

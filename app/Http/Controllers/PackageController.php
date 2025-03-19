@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\Person;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -171,8 +172,8 @@ class PackageController extends Controller
     public function create()
     {
         $services = Service::all();
-        $senders = User::where('type', 'Expéditeur')->get();
-        $recipients = User::where('type', 'Récepteur')->get();
+        $senders = Person::where('type', 'expediteur')->get();
+        $recipients = Person::where('type', 'destinataire')->get();
 
         return view('packages.create', compact('services', 'senders', 'recipients'));
     }

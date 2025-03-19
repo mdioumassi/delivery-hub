@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
+use Rinvex\Country\CountryLoader;
 
 class ServiceController extends Controller
 {
@@ -55,20 +56,41 @@ class ServiceController extends Controller
         return view('services.create', [
             'companies' => Company::all(),
             'services' => Service::all(),
-            'types' => ServiceTypeEnum::cases(),
+            'servicetypes' => ServiceTypeEnum::cases(),
+            'countries' => CountryLoader::countries(),
         ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'required',
-            'description' => 'nullable',
-            'is_active' => 'boolean',
+            'type' => 'required|string',
             'company_id' => 'required|exists:companies,id',
+            'description' => 'nullable|string',
+            'is_active' => 'required|boolean',
+            'destinations' => 'required|array|min:1',
+            'destinations.*.country' => 'required|string',
+            'destinations.*.departure_date' => 'required|date',
+            'destinations.*.arrival_date' => 'required|date|after:destinations.*.departure_date',
+            'destinations.*.flight_name' => 'required|string',
+        ]);
+        // Create service
+        $service = Service::create([
+            'type' => $validated['type'],
+            'company_id' => $validated['company_id'],
+            'description' => $validated['description'],
+            'is_active' => $validated['is_active'],
         ]);
 
-        Service::create($validated);
+        // Create destinations
+        foreach ($validated['destinations'] as $destinationData) {
+            $service->destinations()->create([
+                'country' => $destinationData['country'],
+                'departure_date' => $destinationData['departure_date'],
+                'arrival_date' => $destinationData['arrival_date'],
+                'flight_name' => $destinationData['flight_name'],
+            ]);
+        }
 
         return redirect()->route('services.index')->with('success', 'Service créé avec succès.');
     }

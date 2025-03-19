@@ -17,6 +17,7 @@ class Person extends Model
         'fullname',
         'phone',
         'address',
+        'street',
         'city',
         'zip_code',
         'country',

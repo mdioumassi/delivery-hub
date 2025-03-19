@@ -20,8 +20,8 @@ return new class extends Migration
             $table->date('date_delivery')->nullable();
             $table->string('status');
             $table->string('comment')->nullable();
-            $table->foreignId('sender_id')->constrained('users');
-            $table->foreignId('recipient_id')->constrained('users');
+            $table->foreignId('sender_id')->constrained('persons');
+            $table->foreignId('recipient_id')->constrained('persons');
             $table->foreignId('service_id')->constrained();
             $table->timestamps();
         });

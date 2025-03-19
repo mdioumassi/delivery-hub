@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('country')->default('France');
             $table->string('siret')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->foreignId('gestionnaire_id')->constrained('users'); // <-- "users" au lieu de "user"
+            $table->foreignId('gestionnaire_id')->constrained('persons'); // <-- "users" au lieu de "user"
             $table->timestamps();
         });
     }

@@ -47,11 +47,11 @@
                                 Connexion
                             </a>
 
-                            @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="px-6 py-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 shadow-lg hover:shadow-blue-200">
+                            <!-- @if (Route::has('persons.create')) -->
+                            <a href="{{ route('persons.create') }}" class="px-6 py-2.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 shadow-lg hover:shadow-blue-200">
                                 Inscription
                             </a>
-                            @endif
+                            <!-- @endif -->
                         @endauth
                     </nav>
                     @endif
